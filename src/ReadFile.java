@@ -52,7 +52,6 @@ public class ReadFile {
         //reads in entire file line by line and stores each line as a string. Stores strings in a list of strings
         this.wholeFile = Files.readAllLines(myFile);
         //split file line into individual words by separation of comma (string of the columns)
-        int k = 0;
         for (int i = 1; i < fileLength; i++) {
             this.splitFile = List.of((this.wholeFile.get(i).split(",")));
 
@@ -166,9 +165,5 @@ public class ReadFile {
                 this.lowestMinTempYear.add(0.0f);
             }
         }
-    }
-
-    public void setDateList(){
-
     }
 }
