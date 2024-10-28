@@ -1,3 +1,9 @@
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +17,7 @@ public class Main {
        List<Integer>[] dataCategories = readFile.getDataCatergories();
 
        //create frame
-       JFrame frame = new JFrame("Title");
+       JFrame frame = new JFrame("Weather Stats");
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
        frame.getContentPane().setBackground(Color.gray);
        frame.setPreferredSize(new Dimension(800, 600));
@@ -30,10 +36,15 @@ public class Main {
        dataModel.setDataArray(newArray);
        dataModel.setDataModel();
 
+       //DatasetCreator dataset = new DatasetCreator();
+       //DefaultCategoryDataset newDataset = dataset.createDatasetFrom2DArray(newArray);
+
+
        //add background panel
        frame.getContentPane().add(backPanel);
 
        TablePanel tablePanel = new TablePanel(dataModel);
+       tablePanel.setFilters();
        backPanel.add(tablePanel);
 
        StatsPanel statsPanel = new StatsPanel(newArray);
