@@ -58,7 +58,7 @@ public class StatsPanel extends JPanel {
         avgMinTemp32.setText("Yearly average of days with Min temp > 32 - " + averages.get(6));
         avgMinTemp90.setText("Yearly average of days with Min temp > 90 - " + averages.get(9));
         avgMaxTemp32.setText("Yearly average of days with Max temp > 32 - " + averages.get(7));
-        avgMaxTemp70.setText("Yearly average of days with Min temp > 90 - " + averages.get(8));
+        avgMaxTemp70.setText("Yearly average of days with Max temp > 90 - " + averages.get(8));
         avgFog.setText("Yearly average of days with Fog - " + averages.get(10));
         avgHeavyFog.setText("Yearly average of days with Heavy Fog - " + averages.get(11));
         avgStorms.setText("Yearly average of days with at least one storm - " + averages.get(12));
@@ -69,9 +69,21 @@ public class StatsPanel extends JPanel {
 
 
         System.out.println(averages);
-        add(avgHundrethPrec,SwingConstants.CENTER);
+        add(avgStorms, SwingConstants.CENTER);
+        add(avgHeavyFog, SwingConstants.CENTER);
+        add(avgFog, SwingConstants.CENTER);
+        add(avgMaxTemp70, SwingConstants.CENTER);
+        add(avgMaxTemp32, SwingConstants.CENTER);
+        add(avgMinTemp90, SwingConstants.CENTER);
+        add(avgMinTemp32, SwingConstants.CENTER);
+        add(avgMinTemp0, SwingConstants.CENTER);
+        add(avgInchSnowFall, SwingConstants.CENTER);
+        add(avgInchSnowDepth, SwingConstants.CENTER);
+        add(avgInchPrec, SwingConstants.CENTER);
         add(avgTenthPrec,SwingConstants.CENTER);
+        add(avgHundrethPrec,SwingConstants.CENTER);
         add(title,SwingConstants.CENTER);
+
     } //constructor
 
 }
