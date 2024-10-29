@@ -20,11 +20,15 @@ public class TablePanel extends JPanel {
     DetailPanel detailPanel;
 
     public TablePanel(DataModel data, StatsPanel statsPanel, DetailPanel detailPanel) {
+        //set size and bg color
         setBackground(Color.black);
         setPreferredSize(new Dimension(1500, 400));
+
+        //set stats and detail panel
         this.statsPanel = statsPanel;
         this.detailPanel = detailPanel;
 
+        //set filter panel size and bg color
         filterPanel = new JPanel();
         filterPanel.setBackground(Color.gray);
         filterPanel.setPreferredSize(new Dimension(1380, 30));
@@ -32,39 +36,53 @@ public class TablePanel extends JPanel {
         filters = new ArrayList<>();
         this.data = data;
 
+        //create sorter for table
         sorter = new TableRowSorter<>(data);
         table = new JTable();
+
+        //add dataModel to table and sorter
         table.setModel(data);
         table.setRowSorter(sorter);
 
+        //set scroll pane size
         scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(1380, 490));
         table.setFillsViewportHeight(true);
 
+        //add filter panel and scroll pane
         add(filterPanel);
         add(scrollPane);
 
+        //action listener to update detail panel
         table.getSelectionModel().addListSelectionListener(e -> updateDetailPanel());
         this.setVisible(true);
     }
 
     public void updateDetailPanel(){
+        //stores which row is selected
         int selectedRow = table.getSelectedRow();
         if (selectedRow >= 0) {
+            //uses selected row as index
             int modelRow = table.convertRowIndexToModel(selectedRow);
+            //grabs all rain day values from selected rows and combine them into one value
             int sumOfRainDays = (int) data.getValueAt(modelRow, 1) + (int) data.getValueAt(modelRow, 2) + (int) data.getValueAt(modelRow, 3);
+            //grabs all snow day values from selected rows and combine them into one value
             int sumOfSnowDays = (int) data.getValueAt(modelRow, 4) + (int) data.getValueAt(modelRow, 5);
+            //grabs all for and storm day values from selected rows and combine them into one value
             int sumOfFogOrStormDays = (int) data.getValueAt(modelRow, 11) + (int) data.getValueAt(modelRow, 12) + (int) data.getValueAt(modelRow, 13);
 
+            //convert sum values into a string
             String rain = String.valueOf(sumOfRainDays);
             String snow = String.valueOf(sumOfSnowDays);
             String fogOrStorm = String.valueOf(sumOfFogOrStormDays);
+
+            //update detail panel with values from selected rows
             detailPanel.updateDetails(rain, snow, fogOrStorm);
         }
     }
 
     public void setFilters() {
-
+        //create decade checkboxes and add them to filters arrayList
         JCheckBox sixtiesCheckBox = new JCheckBox("60's");
         filters.add(sixtiesCheckBox);
         JCheckBox seventiesCheckBox = new JCheckBox("70's");
@@ -80,6 +98,7 @@ public class TablePanel extends JPanel {
         JCheckBox twentiesCheckBox = new JCheckBox("20's");
         filters.add(twentiesCheckBox);
 
+        //add filters checkboxes to filter panel
         for (JCheckBox filter : filters) {
             filterPanel.add(filter);
         }
@@ -89,6 +108,7 @@ public class TablePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 List<RowFilter<Object, Object>> filters = new ArrayList<>();
 
+                //checks if check box is selected, if selected display correct decades
                 if (sixtiesCheckBox.isSelected()) {
                     filters.add(RowFilter.regexFilter("196[0-9]", 0)); // Column index 1 for Year
                 }
@@ -111,6 +131,7 @@ public class TablePanel extends JPanel {
                     filters.add(RowFilter.regexFilter("202[0-9]", 0));
                 }
 
+                //allows filters to work while more than one filter selected
                 RowFilter<Object, Object> combinedFilter = filters.isEmpty()
                         ? null
                         : RowFilter.orFilter(filters);
@@ -120,12 +141,14 @@ public class TablePanel extends JPanel {
             }
         };
 
+        //adds action listener to filters
         for (JCheckBox filter : filters) {
             filter.addActionListener(filterActionListener);
         }
     }
 
     private void updateStatsPanelAverage() {
+        //sum of column values
         int count = 0;
         float sum1 = 0.0f;
         float sum2 = 0.0f;
@@ -141,7 +164,7 @@ public class TablePanel extends JPanel {
         float sum12 = 0.0f;
         float sum13 = 0.0f;
 
-
+        //stores column data into corresponding values
         for (int rowIndex = 0; rowIndex < table.getRowCount(); rowIndex++) {
             int modelRow = sorter.convertRowIndexToModel(rowIndex);
             Object value1 = data.getValueAt(modelRow, 1);
@@ -156,8 +179,6 @@ public class TablePanel extends JPanel {
             Object value10 = data.getValueAt(modelRow, 10);
             Object value11 = data.getValueAt(modelRow, 11);
             Object value12 = data.getValueAt(modelRow, 12);
-
-
 
             if (value1 instanceof Number) {
                 sum1 += ((Number) value1).floatValue();
@@ -199,7 +220,7 @@ public class TablePanel extends JPanel {
 
         }
 
-
+        //calculate averages
         double average1 = (count > 0) ? sum1 / count : 0;
         double average2 = (count > 0) ? sum2 / count : 0;
         double average3 = (count > 0) ? sum3 / count : 0;
@@ -214,6 +235,7 @@ public class TablePanel extends JPanel {
         double average12 = (count > 0) ? sum12 / count : 0;
         double average13 = (count > 0) ? sum13 / count : 0;
 
+        // Update the average in the stats panel
         statsPanel.updateAverage(average1,
                                  average2,
                                  average3,
@@ -226,6 +248,6 @@ public class TablePanel extends JPanel {
                                  average10,
                                  average11,
                                  average12,
-                                 average13); // Update the average in the other panel
+                                 average13);
     }
 }

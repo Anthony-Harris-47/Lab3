@@ -1,8 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 
 public class StatsPanel extends JPanel {
     Integer[][] data;
@@ -21,15 +19,18 @@ public class StatsPanel extends JPanel {
     JLabel avgStorms;
 
     public StatsPanel(Integer[][] dataArray) {
+        //set size and layout
         this.setPreferredSize(new Dimension(500, 600));
         this.setBackground(Color.white);
         this.setVisible(true);
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
+        //title
         JLabel title = new JLabel();
         title.setText("<html>Stats<br></html>");
         title.setFont(new Font("Times New Roman", 2, 50));
 
+        //corresponding table columns
         avgHundredthPrec = new JLabel();
         avgTenthPrec = new JLabel();
         avgInchPrec = new JLabel();
@@ -44,13 +45,14 @@ public class StatsPanel extends JPanel {
         avgHeavyFog = new JLabel();
         avgStorms = new JLabel();
 
-
-
-
+        //column data
         data = dataArray;
+        //column values
         ArrayList<Integer> values = new ArrayList<>();
+        //weather averages
         ArrayList<Float> averages = new ArrayList<>();
 
+        //get row data for each column and add to averages arraylist (excluding the date column)
         for (int count = 1; count < 14; count++) {
             for (Integer[] row : data) {
                 values.add(row[count]);
@@ -60,8 +62,9 @@ public class StatsPanel extends JPanel {
                                                 .average()
                                                 .orElse(0.0);
             averages.add(average);
-
         }
+
+        //display averages
         avgHundredthPrec.setText("Yearly average of days with precipitation (0.01 Inch) - " + averages.getFirst());
         avgTenthPrec.setText("Yearly average of days with precipitation (0.1 Inch) - " + averages.get(1));
         avgInchPrec.setText("Yearly average of days with precipitation (1 Inch) - " + averages.get(2));
@@ -76,7 +79,7 @@ public class StatsPanel extends JPanel {
         avgHeavyFog.setText("Yearly average of days with Heavy Fog - " + averages.get(11));
         avgStorms.setText("Yearly average of days with at least one storm - " + averages.get(12));
 
-
+        //add averages to panel
         add(avgStorms, SwingConstants.CENTER);
         add(avgHeavyFog, SwingConstants.CENTER);
         add(avgFog, SwingConstants.CENTER);
@@ -92,8 +95,9 @@ public class StatsPanel extends JPanel {
         add(avgHundredthPrec,SwingConstants.CENTER);
         add(title,SwingConstants.CENTER);
 
-    } //constructor
+    }
 
+    //update averages based on selected row
     public void updateAverage(double avg1,
                               double avg2,
                               double avg3,
