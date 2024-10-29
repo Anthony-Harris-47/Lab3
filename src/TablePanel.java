@@ -16,16 +16,21 @@ public class TablePanel extends JPanel {
     ArrayList<JCheckBox> filters;
     DataModel data;
     TableRowSorter<DataModel> sorter;
+    StatsPanel statsPanel;
+    DetailPanel detailPanel;
 
-    public TablePanel(DataModel data) {
+    public TablePanel(DataModel data, StatsPanel statsPanel, DetailPanel detailPanel) {
         setBackground(Color.black);
-        setPreferredSize(new Dimension(1500,400));
+        setPreferredSize(new Dimension(1500, 400));
+        this.statsPanel = statsPanel;
+        this.detailPanel = detailPanel;
 
         filterPanel = new JPanel();
         filterPanel.setBackground(Color.gray);
-        filterPanel.setPreferredSize(new Dimension(1380,80));
+        filterPanel.setPreferredSize(new Dimension(1380, 30));
 
         filters = new ArrayList<>();
+        this.data = data;
 
         sorter = new TableRowSorter<>(data);
         table = new JTable();
@@ -33,16 +38,32 @@ public class TablePanel extends JPanel {
         table.setRowSorter(sorter);
 
         scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(1380,490));
+        scrollPane.setPreferredSize(new Dimension(1380, 490));
         table.setFillsViewportHeight(true);
 
         add(filterPanel);
         add(scrollPane);
 
+        table.getSelectionModel().addListSelectionListener(e -> updateDetailPanel());
         this.setVisible(true);
     }
 
-    public void setFilters(){
+    public void updateDetailPanel(){
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow >= 0) {
+            int modelRow = table.convertRowIndexToModel(selectedRow);
+            int sumOfRainDays = (int) data.getValueAt(modelRow, 1) + (int) data.getValueAt(modelRow, 2) + (int) data.getValueAt(modelRow, 3);
+            int sumOfSnowDays = (int) data.getValueAt(modelRow, 4) + (int) data.getValueAt(modelRow, 5);
+            int sumOfFogOrStormDays = (int) data.getValueAt(modelRow, 11) + (int) data.getValueAt(modelRow, 12) + (int) data.getValueAt(modelRow, 13);
+
+            String rain = String.valueOf(sumOfRainDays);
+            String snow = String.valueOf(sumOfSnowDays);
+            String fogOrStorm = String.valueOf(sumOfFogOrStormDays);
+            detailPanel.updateDetails(rain, snow, fogOrStorm);
+        }
+    }
+
+    public void setFilters() {
 
         JCheckBox sixtiesCheckBox = new JCheckBox("60's");
         filters.add(sixtiesCheckBox);
@@ -94,11 +115,117 @@ public class TablePanel extends JPanel {
                         ? null
                         : RowFilter.orFilter(filters);
                 sorter.setRowFilter(combinedFilter);
+
+                updateStatsPanelAverage();
             }
         };
 
         for (JCheckBox filter : filters) {
             filter.addActionListener(filterActionListener);
         }
+    }
+
+    private void updateStatsPanelAverage() {
+        int count = 0;
+        float sum1 = 0.0f;
+        float sum2 = 0.0f;
+        float sum3 = 0.0f;
+        float sum4 = 0.0f;
+        float sum5 = 0.0f;
+        float sum6 = 0.0f;
+        float sum7 = 0.0f;
+        float sum8 = 0.0f;
+        float sum9 = 0.0f;
+        float sum10 = 0.0f;
+        float sum11 = 0.0f;
+        float sum12 = 0.0f;
+        float sum13 = 0.0f;
+
+
+        for (int rowIndex = 0; rowIndex < table.getRowCount(); rowIndex++) {
+            int modelRow = sorter.convertRowIndexToModel(rowIndex);
+            Object value1 = data.getValueAt(modelRow, 1);
+            Object value2 = data.getValueAt(modelRow, 2);
+            Object value3 = data.getValueAt(modelRow, 3);
+            Object value4 = data.getValueAt(modelRow, 4);
+            Object value5 = data.getValueAt(modelRow, 5);
+            Object value6 = data.getValueAt(modelRow, 6);
+            Object value7 = data.getValueAt(modelRow, 7);
+            Object value8 = data.getValueAt(modelRow, 8);
+            Object value9 = data.getValueAt(modelRow, 9);
+            Object value10 = data.getValueAt(modelRow, 10);
+            Object value11 = data.getValueAt(modelRow, 11);
+            Object value12 = data.getValueAt(modelRow, 12);
+
+
+
+            if (value1 instanceof Number) {
+                sum1 += ((Number) value1).floatValue();
+            }
+            if (value2 instanceof Number) {
+                sum2 += ((Number) value2).floatValue();
+            }
+            if (value3 instanceof Number) {
+                sum3 += ((Number) value3).floatValue();
+            }
+            if (value4 instanceof Number) {
+                sum4 += ((Number) value4).floatValue();
+            }
+            if (value5 instanceof Number) {
+                sum5 += ((Number) value5).floatValue();
+            }
+            if (value6 instanceof Number) {
+                sum6 += ((Number) value6).floatValue();
+            }
+            if (value7 instanceof Number) {
+                sum7 += ((Number) value7).floatValue();
+            }
+            if (value8 instanceof Number) {
+                sum8 += ((Number) value8).floatValue();
+            }
+            if (value9 instanceof Number) {
+                sum9 += ((Number) value9).floatValue();
+            }
+            if (value10 instanceof Number) {
+                sum10 += ((Number) value10).floatValue();
+            }
+            if (value11 instanceof Number) {
+                sum11 += ((Number) value11).floatValue();
+            }
+            if (value12 instanceof Number) {
+                sum12 += ((Number) value12).floatValue();
+                count++;
+            }
+
+        }
+
+
+        double average1 = (count > 0) ? sum1 / count : 0;
+        double average2 = (count > 0) ? sum2 / count : 0;
+        double average3 = (count > 0) ? sum3 / count : 0;
+        double average4 = (count > 0) ? sum4 / count : 0;
+        double average5 = (count > 0) ? sum5 / count : 0;
+        double average6 = (count > 0) ? sum6 / count : 0;
+        double average7 = (count > 0) ? sum7 / count : 0;
+        double average8 = (count > 0) ? sum8 / count : 0;
+        double average9 = (count > 0) ? sum9 / count : 0;
+        double average10 = (count > 0) ? sum10 / count : 0;
+        double average11 = (count > 0) ? sum11 / count : 0;
+        double average12 = (count > 0) ? sum12 / count : 0;
+        double average13 = (count > 0) ? sum13 / count : 0;
+
+        statsPanel.updateAverage(average1,
+                                 average2,
+                                 average3,
+                                 average4,
+                                 average5,
+                                 average6,
+                                 average7,
+                                 average8,
+                                 average9,
+                                 average10,
+                                 average11,
+                                 average12,
+                                 average13); // Update the average in the other panel
     }
 }

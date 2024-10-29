@@ -17,10 +17,10 @@ public class Main {
        List<Integer>[] dataCategories = readFile.getDataCatergories();
 
        //create frame
-       JFrame frame = new JFrame("Weather Stats");
+       JFrame frame = new JFrame("Weather Stats for Keiser, AR");
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
        frame.getContentPane().setBackground(Color.gray);
-       frame.setPreferredSize(new Dimension(800, 600));
+       frame.setPreferredSize(new Dimension(800, 1600));
 
        //create back panel
        BackPanel backPanel = new BackPanel();
@@ -36,19 +36,22 @@ public class Main {
        dataModel.setDataArray(newArray);
        dataModel.setDataModel();
 
-       //DatasetCreator dataset = new DatasetCreator();
-       //DefaultCategoryDataset newDataset = dataset.createDatasetFrom2DArray(newArray);
+
 
 
        //add background panel
        frame.getContentPane().add(backPanel);
+       StatsPanel statsPanel = new StatsPanel(newArray);
+       DetailPanel detailPanel = new DetailPanel();
 
-       TablePanel tablePanel = new TablePanel(dataModel);
+       TablePanel tablePanel = new TablePanel(dataModel, statsPanel, detailPanel);
        tablePanel.setFilters();
        backPanel.add(tablePanel);
 
-       StatsPanel statsPanel = new StatsPanel(newArray);
        backPanel.add(statsPanel);
+
+       //DetailPanel details = new DetailPanel();
+       backPanel.add(detailPanel);
 
         //pack content and make frame visible
        frame.pack();
