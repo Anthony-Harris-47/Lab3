@@ -1,3 +1,5 @@
+import StrategyPattern.Filters.*;
+
 import javax.swing.*;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
@@ -7,9 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class TablePanel extends JPanel {
-
     JScrollPane scrollPane;
     JTable table;
     JPanel filterPanel;
@@ -110,25 +110,25 @@ public class TablePanel extends JPanel {
 
                 //checks if check box is selected, if selected display correct decades
                 if (sixtiesCheckBox.isSelected()) {
-                    filters.add(RowFilter.regexFilter("196[0-9]", 0)); // Column index 1 for Year
+                    filters.add(new SixtiesFilter().getFilter()); // Column index 1 for Year
                 }
                 if (seventiesCheckBox.isSelected()) {
-                    filters.add(RowFilter.regexFilter("197[0-9]", 0));
+                    filters.add(new SeventiesFilter().getFilter());
                 }
                 if (eightiesCheckBox.isSelected()) {
-                    filters.add(RowFilter.regexFilter("198[0-9]", 0));
+                    filters.add(new EightiesFilter().getFilter());
                 }
                 if (ninetiesCheckBox.isSelected()) {
-                    filters.add(RowFilter.regexFilter("199[0-9]", 0));
+                    filters.add(new NinetiesFilter().getFilter());
                 }
                 if (twoKCheckBox.isSelected()) {
-                    filters.add(RowFilter.regexFilter("200[0-9]", 0));
+                    filters.add(new TwoKFilter().getFilter());
                 }
                 if (tensCheckBox.isSelected()) {
-                    filters.add(RowFilter.regexFilter("201[0-9]", 0));
+                    filters.add(new TensFilter().getFilter());
                 }
                 if (twentiesCheckBox.isSelected()) {
-                    filters.add(RowFilter.regexFilter("202[0-9]", 0));
+                    filters.add(new TwentiesFilter().getFilter());
                 }
 
                 //allows filters to work while more than one filter selected

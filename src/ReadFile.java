@@ -147,15 +147,6 @@ public class ReadFile {
                 //oneOrMoreStorm = oneOrMoreStorm.replaceAll("\\s", "");
                 this.daysWithOneOrMoreStorm.add(0);
             }
-
-            //String lowestTemp = splitFile.get(33).replaceAll("\\s","").replace("\"", "");
-            //lowestTemp = lowestTemp.replaceAll("\\s", "");
-            //if (!lowestTemp.isEmpty() && !lowestTemp.contains(" ")) {
-            //this.lowestMinTempYear.add( Float.parseFloat(lowestTemp));
-            //} else {
-            //this.lowestMinTempYear.add(0.0f);
-            //}
-
         }
     }
 
