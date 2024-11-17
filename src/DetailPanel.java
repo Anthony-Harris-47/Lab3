@@ -37,6 +37,5 @@ public class DetailPanel extends JPanel{
         detail1.setText("Total days with rain: " + d1);
         detail2.setText("Total days with snow: " + d2);
         detail3.setText("Total days with fog or storms: " + d3);
-
     }
 }

@@ -50,6 +50,9 @@ public class ReadFile {
         //reads in entire file line by line and stores each line as a string. Stores strings in a list of strings
         this.wholeFile = Files.readAllLines(myFile);
         //split file line into individual words by separation of comma (string of the columns)
+
+
+        //strategy pattern????
         for (int i = 2; i < fileLength; i++) {
             this.splitFile = List.of((this.wholeFile.get(i).split(",")));
 
@@ -144,7 +147,6 @@ public class ReadFile {
             if (!oneOrMoreStorm.isEmpty() && !oneOrMoreStorm.contains(" ")) {
                 this.daysWithOneOrMoreStorm.add(Integer.valueOf(oneOrMoreStorm));
             } else {
-                //oneOrMoreStorm = oneOrMoreStorm.replaceAll("\\s", "");
                 this.daysWithOneOrMoreStorm.add(0);
             }
         }
@@ -170,5 +172,4 @@ public class ReadFile {
         public List<Integer>[] getDataCatergories(){
             return dataCategories;
         };
-
     }

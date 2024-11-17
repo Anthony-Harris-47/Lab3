@@ -149,24 +149,18 @@ public class TablePanel extends JPanel {
 
     private void updateStatsPanelAverage() {
         //sum of column values
+        float temp = 0.0f;
         int count = 0;
-        float sum1 = 0.0f;
-        float sum2 = 0.0f;
-        float sum3 = 0.0f;
-        float sum4 = 0.0f;
-        float sum5 = 0.0f;
-        float sum6 = 0.0f;
-        float sum7 = 0.0f;
-        float sum8 = 0.0f;
-        float sum9 = 0.0f;
-        float sum10 = 0.0f;
-        float sum11 = 0.0f;
-        float sum12 = 0.0f;
-        float sum13 = 0.0f;
+        List<Float> columnSums = new ArrayList<>();
+
+        for (int i = 0; i < 13; i++) {
+            columnSums.add(0.0f);
+        }
 
         //stores column data into corresponding values
         for (int rowIndex = 0; rowIndex < table.getRowCount(); rowIndex++) {
             int modelRow = sorter.convertRowIndexToModel(rowIndex);
+
             Object value1 = data.getValueAt(modelRow, 1);
             Object value2 = data.getValueAt(modelRow, 2);
             Object value3 = data.getValueAt(modelRow, 3);
@@ -181,7 +175,9 @@ public class TablePanel extends JPanel {
             Object value12 = data.getValueAt(modelRow, 12);
 
             if (value1 instanceof Number) {
-                sum1 += ((Number) value1).floatValue();
+                temp = 0;
+                temp = (float) value1;
+                columnSums.set(0, ((columnSums.getFirst() + temp)));
             }
             if (value2 instanceof Number) {
                 sum2 += ((Number) value2).floatValue();
