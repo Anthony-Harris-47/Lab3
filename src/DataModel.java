@@ -1,10 +1,13 @@
+import ObserverPattern.DataListener;
+
 import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class DataModel implements TableModel {
+public class DataModel extends AbstractTableModel {
+    //list of data listeners that will listen to DataModel
+    private List<DataListener> listeners = new ArrayList<>();
     int rowCount;
     int columnCount;
     Object[][] data;
@@ -26,6 +29,25 @@ public class DataModel implements TableModel {
             "Days w/ 1+ Storms"
     };
 
+    //add listener to list of data listeners
+    public void addListener(DataListener listener) {
+        listeners.add(listener);
+    }
+
+    //iterate over all listeners and call dataChange method to notify
+    private void notifyListeners() {
+        for (DataListener listener : listeners) {
+            listener.dataChange();
+        }
+    }
+
+    //refresh display on data change
+    @Override
+    public void fireTableDataChanged() {
+        super.fireTableDataChanged();
+        notifyListeners();
+    }
+
 
     public void setDataArray (Integer[][] dataArray) {
         listeners = new ArrayList<>();
@@ -35,11 +57,6 @@ public class DataModel implements TableModel {
     public void setDataModel () {
         columnCount = columnNames.length;
         rowCount = data.length;
-    }
-
-    ArrayList<TableModelListener> listeners;
-    public void getData(List<Integer> weatherData){
-
     }
 
     @Override
@@ -63,27 +80,7 @@ public class DataModel implements TableModel {
     }
 
     @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
-    }
-
-    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return data[rowIndex][columnIndex];
-    }
-
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-
-    }
-
-    @Override
-    public void addTableModelListener(TableModelListener l) {
-        listeners.add(l);
-    }
-
-    @Override
-    public void removeTableModelListener(TableModelListener l) {
-        listeners.remove(l);
     }
 }

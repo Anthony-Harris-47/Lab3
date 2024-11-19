@@ -1,3 +1,4 @@
+import ObserverPattern.DataListener;
 import StrategyPattern.Filters.*;
 
 import javax.swing.*;
@@ -9,7 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TablePanel extends JPanel {
+public class TablePanel extends JPanel implements DataListener {
     JScrollPane scrollPane;
     JTable table;
     JPanel filterPanel;
@@ -35,13 +36,13 @@ public class TablePanel extends JPanel {
 
         filters = new ArrayList<>();
         this.data = data;
+        this.data.addListener(this);
 
         //create sorter for table
         sorter = new TableRowSorter<>(data);
-        table = new JTable();
+        table = new JTable(data);
 
         //add dataModel to table and sorter
-        table.setModel(data);
         table.setRowSorter(sorter);
 
         //set scroll pane size
@@ -148,102 +149,44 @@ public class TablePanel extends JPanel {
     }
 
     private void updateStatsPanelAverage() {
-        //sum of column values
-        float temp = 0.0f;
         int count = 0;
-        List<Float> columnSums = new ArrayList<>();
-
-        for (int i = 0; i < 13; i++) {
-            columnSums.add(0.0f);
-        }
 
         //stores column data into corresponding values
         for (int rowIndex = 0; rowIndex < table.getRowCount(); rowIndex++) {
             int modelRow = sorter.convertRowIndexToModel(rowIndex);
 
-            Object value1 = data.getValueAt(modelRow, 1);
-            Object value2 = data.getValueAt(modelRow, 2);
-            Object value3 = data.getValueAt(modelRow, 3);
-            Object value4 = data.getValueAt(modelRow, 4);
-            Object value5 = data.getValueAt(modelRow, 5);
-            Object value6 = data.getValueAt(modelRow, 6);
-            Object value7 = data.getValueAt(modelRow, 7);
-            Object value8 = data.getValueAt(modelRow, 8);
-            Object value9 = data.getValueAt(modelRow, 9);
-            Object value10 = data.getValueAt(modelRow, 10);
-            Object value11 = data.getValueAt(modelRow, 11);
-            Object value12 = data.getValueAt(modelRow, 12);
+            List<Object> values = new ArrayList<>();
+            float[] sums = new float[13];
+            double[] averages = new double[13];
 
-            if (value1 instanceof Number) {
-                temp = 0;
-                temp = (float) value1;
-                columnSums.set(0, ((columnSums.getFirst() + temp)));
-            }
-            if (value2 instanceof Number) {
-                sum2 += ((Number) value2).floatValue();
-            }
-            if (value3 instanceof Number) {
-                sum3 += ((Number) value3).floatValue();
-            }
-            if (value4 instanceof Number) {
-                sum4 += ((Number) value4).floatValue();
-            }
-            if (value5 instanceof Number) {
-                sum5 += ((Number) value5).floatValue();
-            }
-            if (value6 instanceof Number) {
-                sum6 += ((Number) value6).floatValue();
-            }
-            if (value7 instanceof Number) {
-                sum7 += ((Number) value7).floatValue();
-            }
-            if (value8 instanceof Number) {
-                sum8 += ((Number) value8).floatValue();
-            }
-            if (value9 instanceof Number) {
-                sum9 += ((Number) value9).floatValue();
-            }
-            if (value10 instanceof Number) {
-                sum10 += ((Number) value10).floatValue();
-            }
-            if (value11 instanceof Number) {
-                sum11 += ((Number) value11).floatValue();
-            }
-            if (value12 instanceof Number) {
-                sum12 += ((Number) value12).floatValue();
-                count++;
+            for (int i = 1; i <= 12; i++) {
+                values.add(data.getValueAt(modelRow, i));
             }
 
+
+            for (int i = 0; i < values.size(); i++) {
+                Object value = values.get(i);
+                if (value instanceof Number) {
+                    sums[i] += ((Number) value).floatValue();
+                    if (i == 11) {
+                        count++;
+                    }
+                }
+            }
+
+            //Calculate averages
+            for (int i = 0; i < sums.length; i++) {
+                averages[i] = (count > 0) ? sums[i] / count : 0;
+            }
+
+            //Update the average in the stats panel
+            statsPanel.updateAverage(averages);
         }
+    }
 
-        //calculate averages
-        double average1 = (count > 0) ? sum1 / count : 0;
-        double average2 = (count > 0) ? sum2 / count : 0;
-        double average3 = (count > 0) ? sum3 / count : 0;
-        double average4 = (count > 0) ? sum4 / count : 0;
-        double average5 = (count > 0) ? sum5 / count : 0;
-        double average6 = (count > 0) ? sum6 / count : 0;
-        double average7 = (count > 0) ? sum7 / count : 0;
-        double average8 = (count > 0) ? sum8 / count : 0;
-        double average9 = (count > 0) ? sum9 / count : 0;
-        double average10 = (count > 0) ? sum10 / count : 0;
-        double average11 = (count > 0) ? sum11 / count : 0;
-        double average12 = (count > 0) ? sum12 / count : 0;
-        double average13 = (count > 0) ? sum13 / count : 0;
-
-        // Update the average in the stats panel
-        statsPanel.updateAverage(average1,
-                                 average2,
-                                 average3,
-                                 average4,
-                                 average5,
-                                 average6,
-                                 average7,
-                                 average8,
-                                 average9,
-                                 average10,
-                                 average11,
-                                 average12,
-                                 average13);
+    @Override
+    public void dataChange() {
+        //React to data change
+        table.repaint();
     }
 }

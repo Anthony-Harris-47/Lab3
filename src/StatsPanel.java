@@ -98,31 +98,33 @@ public class StatsPanel extends JPanel {
     }
 
     //update averages based on selected row
-    public void updateAverage(double avg1,
-                              double avg2,
-                              double avg3,
-                              double avg4,
-                              double avg5,
-                              double avg6,
-                              double avg7,
-                              double avg8,
-                              double avg9,
-                              double avg10,
-                              double avg11,
-                              double avg12,
-                              double avg13) {
-        avgHundredthPrec.setText("Yearly average of days with precipitation (0.01 Inch) - " + avg1);
-        avgTenthPrec.setText("Yearly average of days with precipitation (0.1 Inch) - " + avg2);
-        avgInchPrec.setText("Yearly average of days with precipitation (1 Inch) - " + avg3);
-        avgInchSnowDepth.setText("Yearly average of days with snow depth (1 Inch) - " + avg4);
-        avgInchSnowFall.setText("Yearly average of days with snow fall (1 Inch) - " + avg5);
-        avgMinTemp0.setText("Yearly average of days with Min temp > 0 - " + avg6);
-        avgMinTemp32.setText("Yearly average of days with Min temp > 32 - " + avg7);
-        avgMinTemp90.setText("Yearly average of days with Min temp > 90 - " + avg8);
-        avgMaxTemp32.setText("Yearly average of days with Max temp > 32 - " + avg9);
-        avgMaxTemp70.setText("Yearly average of days with Max temp > 90 - " + avg10);
-        avgFog.setText("Yearly average of days with Fog - " + avg11);
-        avgHeavyFog.setText("Yearly average of days with Heavy Fog - " + avg12);
-        avgStorms.setText("Yearly average of days with at least one storm - " + avg13);
+    public void updateAverage(double[] avg) { JLabel[] avgLabels = {
+            avgHundredthPrec, avgTenthPrec, avgInchPrec, avgInchSnowDepth, avgInchSnowFall,
+            avgMinTemp0, avgMinTemp32, avgMinTemp90, avgMaxTemp32, avgMaxTemp70,
+            avgFog, avgHeavyFog, avgStorms
+    };
+
+        // Descriptions for each average
+        String[] descriptions = {
+                "Yearly average of days with precipitation (0.01 Inch) - ",
+                "Yearly average of days with precipitation (0.1 Inch) - ",
+                "Yearly average of days with precipitation (1 Inch) - ",
+                "Yearly average of days with snow depth (1 Inch) - ",
+                "Yearly average of days with snow fall (1 Inch) - ",
+                "Yearly average of days with Min temp > 0 - ",
+                "Yearly average of days with Min temp > 32 - ",
+                "Yearly average of days with Min temp > 90 - ",
+                "Yearly average of days with Max temp > 32 - ",
+                "Yearly average of days with Max temp > 90 - ",
+                "Yearly average of days with Fog - ",
+                "Yearly average of days with Heavy Fog - ",
+                "Yearly average of days with at least one storm - "
+        };
+
+        // Update each label in a loop
+        for (int i = 0; i < avg.length; i++) {
+            avgLabels[i].setText(descriptions[i] + avg[i]);
+        }
     }
 }
+

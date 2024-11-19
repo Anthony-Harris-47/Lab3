@@ -8,7 +8,7 @@ public class Main {
        //read in and store data into usable format
         ReadFile readFile = new ReadFile("src/USC00033821.csv");
         readFile.setCategories();
-       List<Integer>[] dataCategories = readFile.getDataCatergories();
+       List<Integer>[] dataCategories = readFile.getDataCategories();
 
        //create frame
        JFrame frame = new JFrame("Weather Stats for Keiser, AR");

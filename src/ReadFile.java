@@ -3,7 +3,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ReadFile {
     //declare list of strings
@@ -51,8 +50,6 @@ public class ReadFile {
         this.wholeFile = Files.readAllLines(myFile);
         //split file line into individual words by separation of comma (string of the columns)
 
-
-        //strategy pattern????
         for (int i = 2; i < fileLength; i++) {
             this.splitFile = List.of((this.wholeFile.get(i).split(",")));
 
@@ -152,6 +149,7 @@ public class ReadFile {
         }
     }
 
+
         public void setCategories() {
             dataCategories[0] = year;
             dataCategories[1] = daysWithOneHundredthInchPrec;
@@ -169,7 +167,7 @@ public class ReadFile {
             dataCategories[13] = daysWithOneOrMoreStorm;
         }
 
-        public List<Integer>[] getDataCatergories(){
+        public List<Integer>[] getDataCategories(){
             return dataCategories;
-        };
+        }
     }
